@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+/* ۱. استفاده از فونت مدرن و بین‌المللی Alexandria از گوگل
+  این فونت هم برای فارسی و هم کوردی (سورانی) فوق‌العاده خوانا، مهندسی و مدرن است.
+*/
+@import "tailwindcss";
+
+@theme {
+  /* تنظیم Alexandria به عنوان فونت پایه برای تمام زبان‌های خاورمیانه */
+  --font-sans: 'Alexandria', 'Peyda', 'Yekan Bakh', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  
+  /* تعریف یک متغیر فونت اختصاصی برای انگلیسی (برای تنوع، اگرچه Alexandria انگلیسی زیبایی هم دارد) */
+  --font-en: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* تنظیمات پایه‌ای بدنه وب‌سایت */
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* اعمال رنگ پس زمینه مشکی عمیق (Deep Dark) ترند ۲۰۲۶ به صورت سراسری */
+  background-color: #05060A;
+  color: #f3f4f6;
+}
+
+/* --- تنظیمات اختصاصی تایپوگرافی بر اساس زبان --- */
+
+/* فارسی (fa) - پیش‌فرض */
+:root[lang="fa"] body {
+  font-family: var(--font-sans);
+  line-height: 1.7;
+}
+
+/* کوردی (ku) */
+:root[lang="ku"] body {
+  /* نیازی به فونت مجزا نیست، Alexandria حروف کوردی را بی‌نقص نشان می‌دهد */
+  font-family: var(--font-sans);
+  /* متون کوردی به دلیل استفاده از حروف صدادار چسبیده (ێ، ۆ، ە) به فاصله خطوط بیشتری نیاز دارند */
+  line-height: 1.8; 
+}
+
+/* انگلیسی (en) */
+:root[lang="en"] body {
+  /* در انگلیسی از فونت‌های سیستمی و خوانای لاتین استفاده می‌کنیم */
+  font-family: var(--font-en);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* بهینه‌سازی اعداد: 
+  برای جداول ترانزیتی و قیمت‌ها بهتر است اعداد در حالت جدولی (tabular) قرار بگیرند
+  تا عرض یکسانی داشته باشند و زیر هم مرتب قرار بگیرند.
+*/
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes move {
+  0% { left: 0%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { left: 80%; opacity: 0; }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+/* انیمیشن لیزری مسیر */
+@keyframes routeLaser {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* افکت درخشش نئونی برای خطوط نقشه */
+.laser-route {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(243, 112, 31, 0.6));
+  animation: routeLaser 3s linear infinite;
+}
+
+/* استایل مارکرهای درخشان نقشه */
+.custom-tooltip {
+  background: rgba(10, 12, 20, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: bold !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+}

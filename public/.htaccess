@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # اگر کاربر به یک فایل یا پوشه واقعی (مثل عکس‌ها) اشاره کرد، آن را لود کن
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  
+  # در غیر این صورت، همه چیز را به index.html بفرست (برای React Router)
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# فعال‌سازی فشرده‌سازی Gzip برای افزایش سرعت لود
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript
+</IfModule>
+# 🚀 لایه‌های امنیتی پیشرفته (Security Headers)
+<IfModule mod_headers.c>
+  # جلوگیری از باز شدن سایت شما در iframe سایت‌های دیگر (جلوگیری از Clickjacking)
+  Header set X-Frame-Options "SAMEORIGIN"
+  
+  # فعال‌سازی فیلتر XSS در مرورگر کاربر
+  Header set X-XSS-Protection "1; mode=block"
+  
+  # جلوگیری از تغییر نوع فایل‌ها توسط مرورگر (MIME-type sniffing)
+  Header set X-Content-Type-Options "nosniff"
+  
+  # کنترل اطلاعاتی که هنگام کلیک روی لینک‌های خروجی به سایت‌های دیگر فرستاده می‌شود
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # کش کردن هوشمند فایل‌های استاتیک برای ۱ سال (افزایش وحشتناک سرعت در بازدیدهای بعدی)
+  <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|svg|js|css|woff2)$">
+    Header set Cache-Control "max-alpha=31536000, public"
+  </FilesMatch>
+</IfModule>
