@@ -3,6 +3,7 @@ import { useOutletContext, Link } from 'react-router-dom';
 import { Globe, ArrowRight, MapPin, CheckCircle2 } from 'lucide-react';
 import TransitRouter from '../components/TransitRouter';
 import { GlassCard, AnimatedCounter, IconMap } from '../components/ui';
+import { Helmet } from 'react-helmet-async';
 import SEO from '../components/SEO';
 
 export default function Home() {
@@ -27,6 +28,10 @@ export default function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>صفحه اصلی | نام سایت من</title>
+        <meta name="description" content="توضیحات مخصوص صفحه اصلی سایت" />
+      </Helmet>
       <SEO 
         title={`${t.brand} | ${lang === 'en' ? 'International Transport & Logistics' : 'حمل و نقل بین‌المللی روژدا'}`} 
         description={t.seoText}
