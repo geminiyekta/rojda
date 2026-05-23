@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Outlet, Link, useParams, useNavigate, useLocation, ScrollRestoration } from 'react-router-dom';
 import { LogIn, Zap, Menu, X, ChevronRight, MapPin, Phone, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 import { translations } from '../utils/dictionary';
 import { LinkedinIcon, InstagramIcon } from '../components/ui';
@@ -28,7 +28,6 @@ export default function MainLayout() {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     setIsMenuOpen(false);
   }, [location.pathname]);
 
@@ -43,6 +42,9 @@ export default function MainLayout() {
   };
 
   const appFontFamily = lang === 'en' ? 'system-ui, sans-serif' : '"Vazirmatn", system-ui, sans-serif';
+
+  // کش کردن آبجکت کانتکست برای جلوگیری از رندرهای مخرب هنگام اسکرول
+  const outletContext = useMemo(() => ({ t, lang, isRtl }), [t, lang, isRtl]);
 
   return (
     <div className={`min-h-screen bg-[#05060A] text-gray-100 flex flex-col selection:bg-[#f37021] selection:text-white overflow-x-hidden w-full`} style={{ fontFamily: appFontFamily }} dir={t.dir}>
@@ -86,11 +88,6 @@ export default function MainLayout() {
                 <Zap className="w-4 h-4 animate-pulse group-hover:scale-110" />
                 {t.nav.getQuote}
               </Link>
-              
-              {/* کامنت شده، چون فعلا صفحه لاگین را روت نکردیم، اگر داشتید فعال کنید */}
-              {/* <Link to={`/${lang}/auth`} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm font-bold flex items-center gap-2">
-                <LogIn className="w-4 h-4 text-[#f37021]" /> {t.auth.portalLogin}
-              </Link> */}
             </div>
             
             <button aria-label="Toggle Mobile Menu" className="lg:hidden text-white p-2 z-[60] relative" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -134,7 +131,8 @@ export default function MainLayout() {
       </header>
 
       <main className="flex-grow pt-24 md:pt-36 pb-16 md:pb-24 relative z-10 px-4 sm:px-6 lg:px-8 container mx-auto">
-        <Outlet context={{ t, lang, isRtl }} />
+        <Outlet context={outletContext} />
+        <ScrollRestoration />
       </main>
 
       <footer className="relative mt-20 md:mt-32 border-t border-white/5 bg-[#030407] pt-16 md:pt-24 pb-8 md:pb-12 z-10 overflow-hidden">
