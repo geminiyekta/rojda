@@ -43,7 +43,6 @@ export default function MainLayout() {
 
   const appFontFamily = lang === 'en' ? 'system-ui, sans-serif' : '"Vazirmatn", system-ui, sans-serif';
 
-  // کش کردن آبجکت کانتکست برای جلوگیری از رندرهای مخرب هنگام اسکرول
   const outletContext = useMemo(() => ({ t, lang, isRtl }), [t, lang, isRtl]);
 
   return (
@@ -84,6 +83,12 @@ export default function MainLayout() {
                 ))}
               </div>
               
+              {/* 🚀 دکمه جدید ورود به داشبورد - دسکتاپ */}
+              <a href="https://panel.rojdagroup.com" className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm font-bold flex items-center gap-2 group">
+                <LogIn className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                {lang === 'en' ? 'Dashboard' : lang === 'ku' ? 'داشبۆرد' : 'داشبورد'}
+              </a>
+
               <Link to={`/${lang}/contact`} className="px-6 py-2.5 rounded-full bg-[#f37021]/10 border border-[#f37021]/30 text-[#f37021] hover:bg-[#f37021] hover:text-white transition-all duration-500 text-sm font-black flex items-center gap-2 shadow-[0_0_20px_rgba(243,112,33,0.1)] hover:shadow-[0_0_25px_rgba(243,112,33,0.3)] group">
                 <Zap className="w-4 h-4 animate-pulse group-hover:scale-110" />
                 {t.nav.getQuote}
@@ -110,7 +115,7 @@ export default function MainLayout() {
                     </button>
                     ))}
                 </div>
-                </div>
+            </div>
             {['home', 'services', 'about', 'blog', 'contact'].map((item) => {
               const path = item === 'home' ? `/${lang}` : `/${lang}/${item}`;
               const isActive = location.pathname === path;
@@ -123,9 +128,17 @@ export default function MainLayout() {
             
             <div className="h-px bg-white/10 my-4"></div>
 
-            <Link to={`/${lang}/contact`} onClick={() => setIsMenuOpen(false)} className="w-full py-4 rounded-xl border border-[#f37021]/30 bg-[#f37021]/5 text-[#f37021] font-black flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(243,112,33,0.1)] active:scale-95 transition-transform">
-               <Zap className="w-5 h-5 animate-pulse" /> {t.nav.getQuote}
-            </Link>
+            {/* 🚀 دکمه‌های موبایل */}
+            <div className="flex flex-col gap-3 w-full">
+              <a href="https://panel.rojdagroup.com" className="w-full py-4 rounded-xl border border-white/10 bg-white/5 text-white font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                <LogIn className="w-5 h-5 text-blue-400" /> 
+                {lang === 'en' ? 'Dashboard' : lang === 'ku' ? 'پەنێڵی بەڕێوەبردن' : 'ورود به داشبورد'}
+              </a>
+
+              <Link to={`/${lang}/contact`} onClick={() => setIsMenuOpen(false)} className="w-full py-4 rounded-xl border border-[#f37021]/30 bg-[#f37021]/5 text-[#f37021] font-black flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(243,112,33,0.1)] active:scale-95 transition-transform">
+                 <Zap className="w-5 h-5 animate-pulse" /> {t.nav.getQuote}
+              </Link>
+            </div>
           </div>
         </div>
       </header>
