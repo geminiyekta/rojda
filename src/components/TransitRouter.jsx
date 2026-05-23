@@ -131,18 +131,19 @@ export default function TransitRouter({ lang = 'fa', isRtl = true }) {
   const [loading, setLoading] = useState(false);
   const [journeyData, setJourneyData] = useState(null);
 
-  // 🚀 راه‌اندازی نقشه و حل دائمی مشکل نامرئی شدن در موبایل
+  // 🚀 راه‌اندازی نقشه و حل قطعی مشکل نشت حافظه (Memory Leak)
   useEffect(() => {
     if (!mapRef.current || mapInstance.current) return;
     mapInstance.current = L.map(mapRef.current, { zoomControl: false, attributionControl: false }).setView([33, 53], 5);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(mapInstance.current);
     
-    // این تایمر باعث می‌شود نقشه ابعاد خود را در موبایل دقیق محاسبه کند
-    setTimeout(() => {
+    // ذخیره تایمر در یک متغیر
+    const resizeTimer = setTimeout(() => {
       if (mapInstance.current) mapInstance.current.invalidateSize();
     }, 500);
 
     return () => {
+      clearTimeout(resizeTimer); // <--- این خط اضافه شد تا تایمر در زمان خروج پاک شود
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;
@@ -177,7 +178,10 @@ export default function TransitRouter({ lang = 'fa', isRtl = true }) {
 
   }, [lang, isRtl, showMinorNodes]);
 
-  useEffect(() => { renderMarkers(); }, [renderMarkers, origin, dest]);
+  // 🚀 حذف origin و dest از وابستگی‌ها برای جلوگیری از رندر مجدد و بی‌دلیل مارکرها
+  useEffect(() => { 
+    renderMarkers(); 
+  }, [renderMarkers]);
 
   const calculateRoute = async () => {
     if (!origin || !dest || !mapInstance.current) return;
