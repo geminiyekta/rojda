@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Outlet, Link, useParams, useNavigate, useLocation, ScrollRestoration } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LogIn, Zap, Menu, X, ChevronRight, MapPin, Phone, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 import { translations } from '../utils/dictionary';
 import { LinkedinIcon, InstagramIcon } from '../components/ui';
+import React, { useState, useEffect, useMemo } from 'react';
 
 export default function MainLayout() {
   const { lang = 'fa' } = useParams();
@@ -28,6 +29,7 @@ export default function MainLayout() {
   }, [isMenuOpen]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setIsMenuOpen(false);
   }, [location.pathname]);
 
@@ -42,7 +44,6 @@ export default function MainLayout() {
   };
 
   const appFontFamily = lang === 'en' ? 'system-ui, sans-serif' : '"Vazirmatn", system-ui, sans-serif';
-
   const outletContext = useMemo(() => ({ t, lang, isRtl }), [t, lang, isRtl]);
 
   return (
@@ -83,16 +84,15 @@ export default function MainLayout() {
                 ))}
               </div>
               
-              {/* 🚀 دکمه جدید ورود به داشبورد - دسکتاپ */}
-              <a href="https://panel.rojdagroup.com" className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm font-bold flex items-center gap-2 group">
-                <LogIn className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                {lang === 'en' ? 'Dashboard' : lang === 'ku' ? 'داشبۆرد' : 'داشبورد'}
-              </a>
-
               <Link to={`/${lang}/contact`} className="px-6 py-2.5 rounded-full bg-[#f37021]/10 border border-[#f37021]/30 text-[#f37021] hover:bg-[#f37021] hover:text-white transition-all duration-500 text-sm font-black flex items-center gap-2 shadow-[0_0_20px_rgba(243,112,33,0.1)] hover:shadow-[0_0_25px_rgba(243,112,33,0.3)] group">
                 <Zap className="w-4 h-4 animate-pulse group-hover:scale-110" />
                 {t.nav.getQuote}
               </Link>
+              
+              {/* کامنت شده، چون فعلا صفحه لاگین را روت نکردیم، اگر داشتید فعال کنید */}
+              {/* <Link to={`/${lang}/auth`} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm font-bold flex items-center gap-2">
+                <LogIn className="w-4 h-4 text-[#f37021]" /> {t.auth.portalLogin}
+              </Link> */}
             </div>
             
             <button aria-label="Toggle Mobile Menu" className="lg:hidden text-white p-2 z-[60] relative" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -115,7 +115,7 @@ export default function MainLayout() {
                     </button>
                     ))}
                 </div>
-            </div>
+                </div>
             {['home', 'services', 'about', 'blog', 'contact'].map((item) => {
               const path = item === 'home' ? `/${lang}` : `/${lang}/${item}`;
               const isActive = location.pathname === path;
@@ -128,24 +128,15 @@ export default function MainLayout() {
             
             <div className="h-px bg-white/10 my-4"></div>
 
-            {/* 🚀 دکمه‌های موبایل */}
-            <div className="flex flex-col gap-3 w-full">
-              <a href="https://panel.rojdagroup.com" className="w-full py-4 rounded-xl border border-white/10 bg-white/5 text-white font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
-                <LogIn className="w-5 h-5 text-blue-400" /> 
-                {lang === 'en' ? 'Dashboard' : lang === 'ku' ? 'پەنێڵی بەڕێوەبردن' : 'ورود به داشبورد'}
-              </a>
-
-              <Link to={`/${lang}/contact`} onClick={() => setIsMenuOpen(false)} className="w-full py-4 rounded-xl border border-[#f37021]/30 bg-[#f37021]/5 text-[#f37021] font-black flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(243,112,33,0.1)] active:scale-95 transition-transform">
-                 <Zap className="w-5 h-5 animate-pulse" /> {t.nav.getQuote}
-              </Link>
-            </div>
+            <Link to={`/${lang}/contact`} onClick={() => setIsMenuOpen(false)} className="w-full py-4 rounded-xl border border-[#f37021]/30 bg-[#f37021]/5 text-[#f37021] font-black flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(243,112,33,0.1)] active:scale-95 transition-transform">
+               <Zap className="w-5 h-5 animate-pulse" /> {t.nav.getQuote}
+            </Link>
           </div>
         </div>
       </header>
-
+       <Outlet context={outletContext} />
       <main className="flex-grow pt-24 md:pt-36 pb-16 md:pb-24 relative z-10 px-4 sm:px-6 lg:px-8 container mx-auto">
-        <Outlet context={outletContext} />
-        <ScrollRestoration />
+        <Outlet context={{ t, lang, isRtl }} />
       </main>
 
       <footer className="relative mt-20 md:mt-32 border-t border-white/5 bg-[#030407] pt-16 md:pt-24 pb-8 md:pb-12 z-10 overflow-hidden">
