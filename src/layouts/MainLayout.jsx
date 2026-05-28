@@ -133,9 +133,8 @@ export default function MainLayout() {
           </div>
         </div>
       </header>
-       <Outlet context={outletContextt, lang, isRtl} />
       <main className="flex-grow pt-24 md:pt-36 pb-16 md:pb-24 relative z-10 px-4 sm:px-6 lg:px-8 container mx-auto">
-      
+        <Outlet context={outletContext} />
       </main>
 
       <footer className="relative mt-20 md:mt-32 border-t border-white/5 bg-[#030407] pt-16 md:pt-24 pb-8 md:pb-12 z-10 overflow-hidden">
