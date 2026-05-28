@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Outlet, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LogIn, Zap, Menu, X, ChevronRight, MapPin, Phone, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 import { translations } from '../utils/dictionary';
 import { LinkedinIcon, InstagramIcon } from '../components/ui';
-import React, { useState, useEffect, useMemo } from 'react';
 
 export default function MainLayout() {
   const { lang = 'fa' } = useParams();

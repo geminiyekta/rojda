@@ -1,4 +1,5 @@
 export const postsData = [
+  
   {
     id: 1,
     slug: "instc-corridor-logistics-2026",
